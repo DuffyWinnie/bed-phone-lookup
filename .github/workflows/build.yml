@@ -3,30 +3,44 @@ name: Build Windows EXE
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
+      # 下載 GitHub 專案程式碼
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 安裝 Python
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      # 直接安裝需要的套件
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install pyinstaller openpyxl
 
+      # 確認 Python 程式存在
+      - name: Check source file
+        run: |
+          dir
+          if (!(Test-Path "bed_phone_lookup.py")) {
+            throw "找不到 bed_phone_lookup.py，請確認檔案已上傳到專案根目錄"
+          }
+
+      # 編譯 Windows EXE
       - name: Build EXE
         run: |
-          pyinstaller --clean --noconfirm --onefile --windowed --name BedPhoneLookup bed_phone_lookup.py
+          python -m PyInstaller --clean --noconfirm --onefile --windowed --name BedPhoneLookup bed_phone_lookup.py
 
+      # 上傳 EXE
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
