@@ -33,7 +33,7 @@ jobs:
 
       - name: Build EXE
         run: |
-          python -m PyInstaller --clean --noconfirm --onefile --windowed --name BedPhoneLookup bed_phone_lookup.py
+          python -m PyInstaller --clean --noconfirm --onefile --windowed --icon=app.ico --name BedPhoneLookup bed_phone_lookup.py
 
       - name: Upload EXE
         uses: actions/upload-artifact@v5
