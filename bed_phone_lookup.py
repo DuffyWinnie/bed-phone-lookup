@@ -44,7 +44,6 @@ class BedPhoneApp:
         self.root.title(APP_NAME)
         self.root.geometry("900x700")
         self.root.minsize(800, 600)
-        self.root.state("zoomed")
 
         self.conn = init_db()
         self.after_id = None
